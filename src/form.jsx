@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from "axios"
 class Form extends Component {
     constructor(props) {
         super(props);
@@ -8,19 +8,36 @@ class Form extends Component {
             github:"",
             email:"",
             mobile:"",
-            twitter:""
+            twitter:"",
+            response:""
           }
     }
     componentDidMount=()=>{
 
     }
-    submit=()=>{
+    submit=(e)=>{
+  e.preventDefault()
+ 
+  const dato ={
+      name:this.state.name,
+      github:this.state.github,
+      mobile:this.state.mobile,
+      email:this.state.email,
+      twitter:this.state.twitter
+  }
 
+  let datum =JSON.stringify(dato)
+   axios.post("http://localhost:8080/validation", {data:datum})
+   .then(data =>this.setState({response:data}, ()=>{
+       console.log(data)
+   }))
+   .catch(err => console.log(err))
     }
-    change=()=>{
-        this.setState({[e.target.name]:})
+    change=(e)=>{
+        this.setState({[e.target.name]:e.target.value})
     }
-    render() { 
+    render() {
+        console.log(this.state) 
         return (
             <div>
          <h1>Welcome To Express Validator!</h1>
