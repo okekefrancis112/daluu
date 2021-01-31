@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from "axios"
-class Form extends Component {
+class SecondForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             field:"",
             condition:"",
-            condition_value:"",
+            condition_value:null,
             name:"",
             crew:"",
             age:null,
@@ -20,7 +20,11 @@ class Form extends Component {
     }
     submit=(e)=>{
   e.preventDefault()
- 
+ const rule={
+    field:this.state.field,
+      condition:this.state.condition,
+      condition_value:this.state.condition_value
+ }
   const dato ={
       name:this.state.name,
       crew:this.state.crew,
@@ -28,8 +32,11 @@ class Form extends Component {
       position:this.state.position,
       missions:this.state.missions
   }
-  let datum =JSON.stringify(dato)
-   axios.get(`http://localhost:8080/validation?data=${datum}`)
+  let all = {
+      rule,dato
+  }
+  let datum =JSON.stringify(all)
+   axios.post(`http://localhost:8080/validationrules`, {data:datum})
    .then(data =>this.setState({response:data}, ()=>{
        console.log(data)
    }))
@@ -59,4 +66,4 @@ class Form extends Component {
     }
 }
  
-export default Form;
+export default SecondForm;
